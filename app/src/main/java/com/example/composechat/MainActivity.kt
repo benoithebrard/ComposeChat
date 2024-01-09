@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.example.composechat.data.ChatUser
 import com.example.composechat.data.ChatUserPreview
 import com.example.composechat.ui.theme.ComposeChatTheme
-import com.example.composechat.viewmodel.ChatState
+import com.example.composechat.state.ChatState
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
@@ -72,35 +72,12 @@ fun ChatScreen(
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
-        Box(
-            Modifier
-                .fillMaxWidth()
-                .sizeIn(minHeight = 50.dp)
-                .background(MaterialTheme.colorScheme.primary)
-                .clickable {
-                    // add user
-                },
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Chat",
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary,
-                fontWeight = FontWeight.Bold
-            )
-            IconButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd),
-                onClick = {
-                    // add new messages
-                }) {
-                Icon(
-                    imageVector = Icons.Filled.Person, // Lock
-                    contentDescription = "login / logout",
-                    tint = MaterialTheme.colorScheme.onTertiary
-                )
+        ChatToolbar(
+            title = state.headerTitle,
+            onToggleLogout = {
+                // toggle logout
             }
-        }
+        )
         Box(
             Modifier
                 .fillMaxSize()

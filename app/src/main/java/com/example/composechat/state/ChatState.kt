@@ -1,4 +1,4 @@
-package com.example.composechat.viewmodel
+package com.example.composechat.state
 
 import com.example.composechat.data.ChatUserPreview
 
