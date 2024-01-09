@@ -5,8 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -103,14 +105,19 @@ fun ChatScreen(
             Modifier
                 .fillMaxSize()
         ) {
-            LazyColumn {
+            LazyColumn(
+                contentPadding = PaddingValues(10.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 items(
                     items = state.userPreviews,
                     key = { preview ->
                         preview.user.id
                     }
                 ) { preview ->
-                    ChatEntryPreview(preview = preview)
+                    ChatPreviewEntry(
+                        preview = preview
+                    )
                 }
             }
             IconButton(

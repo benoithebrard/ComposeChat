@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,35 +25,37 @@ import com.example.composechat.ui.theme.ComposeChatTheme
 import kotlin.random.Random
 
 @Composable
-fun ChatEntryPreview(
+fun ChatPreviewEntry(
     preview: ChatUserPreview,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier
+        modifier = modifier,
+        colors = CardDefaults.cardColors(Color.White)
     ) {
         Row(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().padding(10.dp)
         ) {
             Text(
                 modifier = Modifier
-                    .defaultMinSize(minWidth = 50.dp, minHeight = 50.dp)
+                    .defaultMinSize(minWidth = 40.dp, minHeight = 40.dp)
                     .clip(CircleShape)
                     .background(Color(preview.user.color))
                     .padding(bottom = 2.dp)
                     .wrapContentSize(),
                 text = preview.user.name.first().toString().uppercase(),
-                fontSize = 30.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
+            Text(text = "A message preview")
         }
     }
 }
 
 @Preview
 @Composable
-fun ChatUserEntryPreview() {
+fun ChatPreviewEntryPreview() {
     val preview = ChatUserPreview(
         user = ChatUser(
             id = "1234",
@@ -62,6 +65,6 @@ fun ChatUserEntryPreview() {
         lastMessage = "Hey wassup I'm waiting for you by the bus stop and it's raining like hell here so please come over really soon!"
     )
     ComposeChatTheme {
-        ChatEntryPreview(preview = preview)
+        ChatPreviewEntry(preview = preview)
     }
 }
