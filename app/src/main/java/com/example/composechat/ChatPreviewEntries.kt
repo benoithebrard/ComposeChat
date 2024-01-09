@@ -7,10 +7,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.composechat.data.ChatUser
 import com.example.composechat.data.ChatUserPreview
 import com.example.composechat.ui.theme.ComposeChatTheme
-import kotlin.random.Random
 
 @Composable
 fun ChatPreviewEntries(
@@ -42,16 +40,7 @@ fun ChatPreviewEntries(
 fun ChatPreviewEntriesPreview() {
     ComposeChatTheme {
         ChatPreviewEntries(
-            entries = (1..100).map { index ->
-                ChatUserPreview(
-                    user = ChatUser(
-                        id = "user:$index",
-                        name = ('a'..'z').random().toString(),
-                        color = Random.nextLong(0xFFFFFFFF)
-                    ),
-                    lastMessage = "LastMessage#user:${index}"
-                )
-            },
+            entries = mockUserPreviews,
             onEntrySelected = {}
         )
     }

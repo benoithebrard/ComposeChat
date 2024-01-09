@@ -100,16 +100,7 @@ fun ChatScreen(
 @Composable
 fun ChatScreenPreview() {
     val state = ChatState(
-        userPreviews = (1..100).map { index ->
-            ChatUserPreview(
-                user = ChatUser(
-                    id = "user:$index",
-                    name = ('a'..'z').random().toString(),
-                    color = Random.nextLong(0xFFFFFFFF)
-                ),
-                lastMessage = "LastMessage#user:${index}"
-            )
-        },
+        userPreviews = mockUserPreviews,
         headerTitle = "message #420"
     )
     ComposeChatTheme {
@@ -117,4 +108,15 @@ fun ChatScreenPreview() {
             state = state
         )
     }
+}
+
+val mockUserPreviews = (1..100).map { index ->
+    ChatUserPreview(
+        user = ChatUser(
+            id = "user:$index",
+            name = ('a'..'z').random().toString(),
+            color = Random.nextLong(0xFFFFFFFF)
+        ),
+        lastMessage = "LastMessage#user:${index}"
+    )
 }
