@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 ChatUserPreview(
                     user = ChatUser(
                         id = "user:$index",
-                        name = "User#$index",
+                        name = ('a'..'z').random().toString(),
                         color = Random.nextLong(0xFFFFFFFF)
                     ),
                     lastMessage = "LastMessage#user:${index}"
