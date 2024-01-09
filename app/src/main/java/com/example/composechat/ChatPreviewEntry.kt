@@ -1,6 +1,7 @@
 package com.example.composechat
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,14 +28,17 @@ import kotlin.random.Random
 @Composable
 fun ChatPreviewEntry(
     preview: ChatUserPreview,
+    onEntrySelected: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onEntrySelected() },
         colors = CardDefaults.cardColors(Color.White)
     ) {
         Row(
-            modifier = Modifier.fillMaxSize().padding(10.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
         ) {
             Text(
                 modifier = Modifier
@@ -48,7 +52,11 @@ fun ChatPreviewEntry(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
-            Text(text = "A message preview")
+            Text(
+                modifier = Modifier.padding(start = 10.dp),
+                text = preview.lastMessage ?: "no message",
+                fontSize = 14.sp
+            )
         }
     }
 }
@@ -65,6 +73,9 @@ fun ChatPreviewEntryPreview() {
         lastMessage = "Hey wassup I'm waiting for you by the bus stop and it's raining like hell here so please come over really soon!"
     )
     ComposeChatTheme {
-        ChatPreviewEntry(preview = preview)
+        ChatPreviewEntry(
+            preview = preview,
+            onEntrySelected = {}
+        )
     }
 }
