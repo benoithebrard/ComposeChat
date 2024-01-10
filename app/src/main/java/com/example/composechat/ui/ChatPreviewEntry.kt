@@ -1,4 +1,4 @@
-package com.example.composechat
+package com.example.composechat.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

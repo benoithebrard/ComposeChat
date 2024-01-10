@@ -1,4 +1,4 @@
-package com.example.composechat
+package com.example.composechat.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composechat.data.ChatUserPreview
+import com.example.composechat.mockUserPreviews
 import com.example.composechat.ui.theme.ComposeChatTheme
 
 @Composable
