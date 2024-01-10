@@ -77,11 +77,21 @@ fun ChatScreen(
 fun ChatScreenPreview() {
     val state = ChatState(
         userPreviews = mockUserPreviews,
-        headerTitle = "message #420"
+        headerTitle = "Welcome"
     )
     ComposeChatTheme {
         ChatScreen(
-            state = null//state
+            state = state
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ChatScreenEmptyPreview() {
+    ComposeChatTheme {
+        ChatScreen(
+            state = null
         )
     }
 }
