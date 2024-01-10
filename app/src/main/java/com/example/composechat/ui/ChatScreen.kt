@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +24,7 @@ import com.example.composechat.ui.theme.ComposeChatTheme
 
 @Composable
 fun ChatScreen(
-    state: ChatState
+    state: ChatState?
 ) {
     Column(
         modifier = Modifier
@@ -31,18 +32,27 @@ fun ChatScreen(
             .background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
         ChatToolbar(
-            title = state.headerTitle,
+            title = state?.headerTitle ?: "Chat",
             onToggleLogout = {
                 // toggle logout
             }
         )
-        Box {
-            ChatPreviewEntries(
-                entries = state.userPreviews,
-                onEntrySelected = { userId ->
-                    // add user maybe
-                }
-            )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            if (state != null) {
+                ChatPreviewEntries(
+                    entries = state.userPreviews,
+                    onEntrySelected = { userId ->
+                        // add user maybe
+                    }
+                )
+            } else {
+                Text(
+                    text = "No message"
+                )
+            }
             IconButton(
                 modifier = Modifier
                     .padding(20.dp)
@@ -71,7 +81,7 @@ fun ChatScreenPreview() {
     )
     ComposeChatTheme {
         ChatScreen(
-            state = state
+            state = null//state
         )
     }
 }
