@@ -53,4 +53,6 @@ class ChatViewModel : ViewModel() {
     fun addUser(user: ChatUser) {
         users.value = listOf(user) + users.value
     }
+
+    fun findUserById(userId: String): ChatUser? = users.value.find { it.id == userId }
 }

@@ -33,6 +33,11 @@ class MainActivity : ComponentActivity() {
                     },
                     onToggleLogout = {
                         viewModel.toggleLogout()
+                    },
+                    onPreviewSelected = { userId ->
+                        viewModel.findUserById(userId)?.let { user ->
+                            viewModel.addMessage(generateMessage(user))
+                        }
                     }
                 )
             }
@@ -48,9 +53,18 @@ private fun generateUser(): ChatUser = ChatUser(
     color = Random.nextLong(0xFFFFFFFF)
 )
 
+private val mockMessages: List<String> = listOf(
+    "Hey wassup I'm waiting for you by the bus stop and it's raining like hell here so please come over really soon!",
+    "Hi mom. Sorry I won't make it for dinner tonight, I'm hanging out with my buddies instead :)",
+    "SPAM DETECTED - don not open this message",
+    "Thanks for your contribution to Vox News. We're happy you care about the world",
+    "Yo man why don't you answer your phone???",
+    "Hasta la vista, baby"
+)
+
 private fun generateMessage(user: ChatUser): ChatMessage = ChatMessage(
     user = user,
-    message = "$userCount - Hey wassup I'm waiting for you by the bus stop and it's raining like hell here so please come over really soon!",
+    message = mockMessages.shuffled().random(),
     time = System.currentTimeMillis()
 )
 

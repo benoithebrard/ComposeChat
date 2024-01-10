@@ -26,7 +26,8 @@ import com.example.composechat.ui.theme.ComposeChatTheme
 fun ChatScreen(
     state: ChatState,
     onCreateNewUserMessage: () -> Unit,
-    onToggleLogout: () -> Unit
+    onToggleLogout: () -> Unit,
+    onPreviewSelected: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -66,9 +67,7 @@ fun ChatScreen(
                 is ChatState.Content -> {
                     ChatPreviewEntries(
                         entries = state.userPreviews,
-                        onPreviewSelected = { userId ->
-                            // add user maybe
-                        }
+                        onPreviewSelected = onPreviewSelected
                     )
                 }
             }
@@ -101,7 +100,8 @@ fun ChatScreenPreview() {
         ChatScreen(
             state = state,
             onCreateNewUserMessage = {},
-            onToggleLogout = {}
+            onToggleLogout = {},
+            onPreviewSelected = {}
         )
     }
 }
@@ -113,7 +113,8 @@ fun ChatScreenEmptyPreview() {
         ChatScreen(
             state = ChatState.Empty,
             onCreateNewUserMessage = {},
-            onToggleLogout = {}
+            onToggleLogout = {},
+            onPreviewSelected = {}
         )
     }
 }
@@ -125,7 +126,8 @@ fun ChatScreenLoggedOutPreview() {
         ChatScreen(
             state = ChatState.LoggedOut,
             onCreateNewUserMessage = {},
-            onToggleLogout = {}
+            onToggleLogout = {},
+            onPreviewSelected = {}
         )
     }
 }
