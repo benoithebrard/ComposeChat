@@ -19,23 +19,28 @@ class ChatViewModel : ViewModel() {
     private val chatMessages = MutableStateFlow<List<ChatMessage>>(emptyList())
     private val users = MutableStateFlow<List<ChatUser>>(emptyList())
 
-    val chatState: StateFlow<ChatState?> =
+    val chatState: StateFlow<ChatState> =
         combine(isLoggedIn, chatMessages, users) { isLoggedIn, chatMessages, users ->
             if (isLoggedIn) {
-                ChatState(
-                    userPreviews = users.map { user ->
-                        ChatUserPreview(
-                            user = user,
-                            lastMessage = chatMessages
-                                .filter { it.user.id == user.id }
-                                .maxByOrNull { it.time }
-                                ?.message
-                        )
-                    },
-                    headerTitle = users.firstOrNull()?.name?.capitalize(Locale.current) ?: "Chat"
-                )
-            } else null
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+                if (users.isEmpty()) {
+                    ChatState.Empty
+                } else {
+                    ChatState.Content(
+                        userPreviews = users.map { user ->
+                            ChatUserPreview(
+                                user = user,
+                                lastMessage = chatMessages
+                                    .filter { it.user.id == user.id }
+                                    .maxByOrNull { it.time }
+                                    ?.message
+                            )
+                        },
+                        headerTitle = users.firstOrNull()?.name?.capitalize(Locale.current)
+                            ?: "Chat"
+                    )
+                }
+            } else ChatState.LoggedOut
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), ChatState.Empty)
 
     fun toggleLogout() {
         isLoggedIn.value = !isLoggedIn.value

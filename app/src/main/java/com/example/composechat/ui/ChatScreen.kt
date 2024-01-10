@@ -24,7 +24,7 @@ import com.example.composechat.ui.theme.ComposeChatTheme
 
 @Composable
 fun ChatScreen(
-    state: ChatState?,
+    state: ChatState,
     onCreateNewUserMessage: () -> Unit,
     onToggleLogout: () -> Unit
 ) {
@@ -34,14 +34,14 @@ fun ChatScreen(
             .background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
         ChatToolbar(
-            title = state?.headerTitle ?: "Chat",
+            title = (state as? ChatState.Content)?.headerTitle ?: "Chat",
             onToggleLogout = onToggleLogout
         )
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            when {
-                state == null -> {
+            when (state) {
+                is ChatState.LoggedOut -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -52,7 +52,7 @@ fun ChatScreen(
                     }
                 }
 
-                state.userPreviews.isEmpty() -> {
+                is ChatState.Empty -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -63,7 +63,7 @@ fun ChatScreen(
                     }
                 }
 
-                else -> {
+                is ChatState.Content -> {
                     ChatPreviewEntries(
                         entries = state.userPreviews,
                         onPreviewSelected = { userId ->
@@ -93,7 +93,7 @@ fun ChatScreen(
 @Preview
 @Composable
 fun ChatScreenPreview() {
-    val state = ChatState(
+    val state = ChatState.Content(
         userPreviews = mockUserPreviews.take(2),
         headerTitle = "Welcome"
     )
@@ -111,7 +111,19 @@ fun ChatScreenPreview() {
 fun ChatScreenEmptyPreview() {
     ComposeChatTheme {
         ChatScreen(
-            state = null,
+            state = ChatState.Empty,
+            onCreateNewUserMessage = {},
+            onToggleLogout = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ChatScreenLoggedOutPreview() {
+    ComposeChatTheme {
+        ChatScreen(
+            state = ChatState.LoggedOut,
             onCreateNewUserMessage = {},
             onToggleLogout = {}
         )
