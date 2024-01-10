@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composechat.data.ChatUserPreview
-import com.example.composechat.mockUserPreviews
 import com.example.composechat.ui.theme.ComposeChatTheme
 
 @Composable

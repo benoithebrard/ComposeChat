@@ -18,16 +18,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.composechat.mockUserPreviews
+import com.example.composechat.data.ChatUserPreview
 import com.example.composechat.state.ChatState
+import com.example.composechat.state.generateUser
 import com.example.composechat.ui.theme.ComposeChatTheme
 
 @Composable
 fun ChatScreen(
     state: ChatState,
-    onCreateNewUserMessage: () -> Unit,
-    onToggleLogout: () -> Unit,
-    onPreviewSelected: (String) -> Unit
+    onCreateNewUserMessage: () -> Unit = {},
+    onToggleLogout: () -> Unit = {},
+    onPreviewSelected: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -89,6 +90,13 @@ fun ChatScreen(
     }
 }
 
+internal val mockUserPreviews = (1..100).map { index ->
+    ChatUserPreview(
+        user = generateUser(),
+        lastMessage = "$index - Hey wassup I'm waiting for you by the bus stop and it's raining like hell here so please come over really soon!"
+    )
+}
+
 @Preview
 @Composable
 fun ChatScreenPreview() {
@@ -98,10 +106,7 @@ fun ChatScreenPreview() {
     )
     ComposeChatTheme {
         ChatScreen(
-            state = state,
-            onCreateNewUserMessage = {},
-            onToggleLogout = {},
-            onPreviewSelected = {}
+            state = state
         )
     }
 }
@@ -111,10 +116,7 @@ fun ChatScreenPreview() {
 fun ChatScreenEmptyPreview() {
     ComposeChatTheme {
         ChatScreen(
-            state = ChatState.Empty,
-            onCreateNewUserMessage = {},
-            onToggleLogout = {},
-            onPreviewSelected = {}
+            state = ChatState.Empty
         )
     }
 }
@@ -124,10 +126,7 @@ fun ChatScreenEmptyPreview() {
 fun ChatScreenLoggedOutPreview() {
     ComposeChatTheme {
         ChatScreen(
-            state = ChatState.LoggedOut,
-            onCreateNewUserMessage = {},
-            onToggleLogout = {},
-            onPreviewSelected = {}
+            state = ChatState.LoggedOut
         )
     }
 }
