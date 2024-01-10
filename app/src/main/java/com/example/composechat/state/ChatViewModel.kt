@@ -37,7 +37,7 @@ class ChatViewModel : ViewModel() {
             } else null
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    fun toggleLoggedIn() {
+    fun toggleLogout() {
         isLoggedIn.value = !isLoggedIn.value
     }
 

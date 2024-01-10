@@ -25,7 +25,8 @@ import com.example.composechat.ui.theme.ComposeChatTheme
 @Composable
 fun ChatScreen(
     state: ChatState?,
-    onCreateNewUserMessage: () -> Unit
+    onCreateNewUserMessage: () -> Unit,
+    onToggleLogout: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -34,27 +35,40 @@ fun ChatScreen(
     ) {
         ChatToolbar(
             title = state?.headerTitle ?: "Chat",
-            onToggleLogout = {
-                // toggle logout
-            }
+            onToggleLogout = onToggleLogout
         )
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            if (state != null && state.userPreviews.isNotEmpty()) {
-                ChatPreviewEntries(
-                    entries = state.userPreviews,
-                    onPreviewSelected = { userId ->
-                        // add user maybe
+            when {
+                state == null -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Logged out"
+                        )
                     }
-                )
-            } else {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "No message"
+                }
+
+                state.userPreviews.isEmpty() -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No message"
+                        )
+                    }
+                }
+
+                else -> {
+                    ChatPreviewEntries(
+                        entries = state.userPreviews,
+                        onPreviewSelected = { userId ->
+                            // add user maybe
+                        }
                     )
                 }
             }
@@ -86,7 +100,8 @@ fun ChatScreenPreview() {
     ComposeChatTheme {
         ChatScreen(
             state = state,
-            onCreateNewUserMessage = {}
+            onCreateNewUserMessage = {},
+            onToggleLogout = {}
         )
     }
 }
@@ -97,7 +112,8 @@ fun ChatScreenEmptyPreview() {
     ComposeChatTheme {
         ChatScreen(
             state = null,
-            onCreateNewUserMessage = {}
+            onCreateNewUserMessage = {},
+            onToggleLogout = {}
         )
     }
 }

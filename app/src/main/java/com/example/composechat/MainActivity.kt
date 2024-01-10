@@ -26,8 +26,13 @@ class MainActivity : ComponentActivity() {
                     onCreateNewUserMessage = {
                         val user = generateUser()
                         val message = generateMessage(user)
-                        viewModel.addUser(user)
-                        viewModel.addMessage(message)
+                        viewModel.apply {
+                            addUser(user)
+                            addMessage(message)
+                        }
+                    },
+                    onToggleLogout = {
+                        viewModel.toggleLogout()
                     }
                 )
             }
@@ -51,11 +56,7 @@ private fun generateMessage(user: ChatUser): ChatMessage = ChatMessage(
 
 internal val mockUserPreviews = (1..100).map { index ->
     ChatUserPreview(
-        user = ChatUser(
-            id = "user:$index",
-            name = ('a'..'z').random().toString(),
-            color = Random.nextLong(0xFFFFFFFF)
-        ),
+        user = generateUser(),
         lastMessage = "$index - Hey wassup I'm waiting for you by the bus stop and it's raining like hell here so please come over really soon!"
     )
 }
