@@ -2,11 +2,9 @@ package com.example.composechat
 
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -75,5 +73,7 @@ class ChatScreenTest {
         composeTestRule.onNodeWithContentDescription("add new message").performClick()
 
         composeTestRule.onNodeWithText("No message").assertDoesNotExist()
+
+        composeTestRule.onNodeWithContentDescription("chat preview entry").assertExists()
     }
 }
