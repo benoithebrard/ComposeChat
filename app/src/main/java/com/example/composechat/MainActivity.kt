@@ -30,16 +30,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val state = ChatState(
-            userPreviews = (1..100).map { index ->
-                ChatUserPreview(
-                    user = ChatUser(
-                        id = "user:$index",
-                        name = ('a'..'z').random().toString(),
-                        color = Random.nextLong(0xFFFFFFFF)
-                    ),
-                    lastMessage = "LastMessage#user:${index}"
-                )
-            },
+            userPreviews = mockUserPreviews,
             headerTitle = "message #420"
         )
         setContent {
@@ -67,10 +58,7 @@ fun ChatScreen(
                 // toggle logout
             }
         )
-        Box(
-            Modifier
-                .fillMaxSize()
-        ) {
+        Box {
             ChatPreviewEntries(
                 entries = state.userPreviews,
                 onEntrySelected = { userId ->
@@ -117,6 +105,6 @@ val mockUserPreviews = (1..100).map { index ->
             name = ('a'..'z').random().toString(),
             color = Random.nextLong(0xFFFFFFFF)
         ),
-        lastMessage = "LastMessage#user:${index}"
+        lastMessage = "$index - Hey wassup I'm waiting for you by the bus stop and it's raining like hell here so please come over really soon!"
     )
 }
