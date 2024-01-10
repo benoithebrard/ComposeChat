@@ -1,5 +1,7 @@
 package com.example.composechat.state
 
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composechat.data.ChatMessage
@@ -30,7 +32,7 @@ class ChatViewModel : ViewModel() {
                                 ?.message
                         )
                     },
-                    headerTitle = users.firstOrNull()?.name ?: "Welcome to the chat"
+                    headerTitle = users.firstOrNull()?.name?.capitalize(Locale.current) ?: "Chat"
                 )
             } else null
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.composechat.data.ChatMessage
 import com.example.composechat.data.ChatUser
 import com.example.composechat.data.ChatUserPreview
 import com.example.composechat.state.ChatViewModel
@@ -21,14 +22,34 @@ class MainActivity : ComponentActivity() {
                 val viewModel = viewModel<ChatViewModel>()
                 val state by viewModel.chatState.collectAsStateWithLifecycle()
                 ChatScreen(
-                    state = state
+                    state = state,
+                    onCreateNewUserMessage = {
+                        val user = generateUser()
+                        val message = generateMessage(user)
+                        viewModel.addUser(user)
+                        viewModel.addMessage(message)
+                    }
                 )
             }
         }
     }
 }
 
-val mockUserPreviews = (1..100).map { index ->
+var userCount = 0
+
+private fun generateUser(): ChatUser = ChatUser(
+    id = Random.nextInt().toString(),
+    name = "${('a'..'z').random()} - user #${userCount++}",
+    color = Random.nextLong(0xFFFFFFFF)
+)
+
+private fun generateMessage(user: ChatUser): ChatMessage = ChatMessage(
+    user = user,
+    message = "$userCount - Hey wassup I'm waiting for you by the bus stop and it's raining like hell here so please come over really soon!",
+    time = System.currentTimeMillis()
+)
+
+internal val mockUserPreviews = (1..100).map { index ->
     ChatUserPreview(
         user = ChatUser(
             id = "user:$index",

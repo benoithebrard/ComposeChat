@@ -14,7 +14,7 @@ import com.example.composechat.ui.theme.ComposeChatTheme
 @Composable
 fun ChatPreviewEntries(
     entries: List<ChatUserPreview>,
-    onEntrySelected: (userId: String) -> Unit
+    onPreviewSelected: (userId: String) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(10.dp),
@@ -28,8 +28,8 @@ fun ChatPreviewEntries(
         ) { preview ->
             ChatPreviewEntry(
                 preview = preview,
-                onEntrySelected = {
-                    onEntrySelected(preview.user.id)
+                onPreviewSelected = {
+                    onPreviewSelected(preview.user.id)
                 }
             )
         }
@@ -41,8 +41,8 @@ fun ChatPreviewEntries(
 fun ChatPreviewEntriesPreview() {
     ComposeChatTheme {
         ChatPreviewEntries(
-            entries = mockUserPreviews,
-            onEntrySelected = {}
+            entries = mockUserPreviews.take(2),
+            onPreviewSelected = {}
         )
     }
 }

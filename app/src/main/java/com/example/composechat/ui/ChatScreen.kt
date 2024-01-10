@@ -24,7 +24,8 @@ import com.example.composechat.ui.theme.ComposeChatTheme
 
 @Composable
 fun ChatScreen(
-    state: ChatState?
+    state: ChatState?,
+    onCreateNewUserMessage: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -38,20 +39,24 @@ fun ChatScreen(
             }
         )
         Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxSize()
         ) {
-            if (state != null) {
+            if (state != null && state.userPreviews.isNotEmpty()) {
                 ChatPreviewEntries(
                     entries = state.userPreviews,
-                    onEntrySelected = { userId ->
+                    onPreviewSelected = { userId ->
                         // add user maybe
                     }
                 )
             } else {
-                Text(
-                    text = "No message"
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No message"
+                    )
+                }
             }
             IconButton(
                 modifier = Modifier
@@ -59,9 +64,8 @@ fun ChatScreen(
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.tertiary)
                     .align(Alignment.BottomEnd),
-                onClick = {
-                    // add new messages
-                }) {
+                onClick = onCreateNewUserMessage
+            ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "add new message",
@@ -76,12 +80,13 @@ fun ChatScreen(
 @Composable
 fun ChatScreenPreview() {
     val state = ChatState(
-        userPreviews = mockUserPreviews,
+        userPreviews = mockUserPreviews.take(2),
         headerTitle = "Welcome"
     )
     ComposeChatTheme {
         ChatScreen(
-            state = state
+            state = state,
+            onCreateNewUserMessage = {}
         )
     }
 }
@@ -91,7 +96,8 @@ fun ChatScreenPreview() {
 fun ChatScreenEmptyPreview() {
     ComposeChatTheme {
         ChatScreen(
-            state = null
+            state = null,
+            onCreateNewUserMessage = {}
         )
     }
 }

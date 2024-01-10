@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,11 +29,11 @@ import kotlin.random.Random
 @Composable
 fun ChatPreviewEntry(
     preview: ChatUserPreview,
-    onEntrySelected: () -> Unit,
+    onPreviewSelected: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.clickable { onEntrySelected() },
+        modifier = modifier.clickable { onPreviewSelected() },
         colors = CardDefaults.cardColors(Color.White)
     ) {
         Row(
@@ -81,7 +80,7 @@ fun ChatPreviewEntryPreview() {
     ComposeChatTheme {
         ChatPreviewEntry(
             preview = preview,
-            onEntrySelected = {}
+            onPreviewSelected = {}
         )
     }
 }
