@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-private const val DEFAULT_SCREEN_TITLE = "Chat"
 private const val SUBSCRIPTION_TIMEOUT_MS = 5000L
 
 class ChatViewModel : ViewModel() {
@@ -50,7 +49,6 @@ class ChatViewModel : ViewModel() {
                         )
                     },
                     headerTitle = users.firstOrNull()?.name?.capitalize(Locale.current)
-                        ?: DEFAULT_SCREEN_TITLE
                 )
             }
 

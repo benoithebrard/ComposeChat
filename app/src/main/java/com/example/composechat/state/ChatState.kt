@@ -8,7 +8,7 @@ sealed class ChatState {
     @Immutable
     data class Content(
         val userPreviews: List<ChatUserPreview>,
-        val headerTitle: String
+        val headerTitle: String?
     ) : ChatState()
 
     object Empty : ChatState()

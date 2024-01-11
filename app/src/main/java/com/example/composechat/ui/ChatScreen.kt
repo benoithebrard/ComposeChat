@@ -37,7 +37,7 @@ fun ChatScreen(
             .background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
         ChatToolbar(
-            title = (state as? ChatState.Content)?.headerTitle ?: "Chat",
+            state = state,
             onToggleLogout = onToggleLogout
         )
         Box(
