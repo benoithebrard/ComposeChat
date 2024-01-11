@@ -4,12 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,36 +38,39 @@ fun ChatPreviewEntry(
         modifier = modifier
             .semantics {
                 contentDescription = "chat preview entry"
-            }
-            .clickable { onPreviewSelected() },
+            },
         colors = CardDefaults.cardColors(Color.White)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                modifier = Modifier
-                    .defaultMinSize(minWidth = 40.dp, minHeight = 40.dp)
-                    .clip(CircleShape)
-                    .background(Color(preview.user.color))
-                    .padding(bottom = 2.dp)
-                    .wrapContentSize(),
-                text = preview.user.name.first().toString().uppercase(),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .wrapContentSize(),
-                text = preview.lastMessage ?: "no message",
-                fontSize = 14.sp,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
+        Surface(
+            modifier = Modifier.clickable {
+                onPreviewSelected()
+            })
+        {
+            Row(
+                modifier = Modifier.padding(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier
+                        .defaultMinSize(minWidth = 40.dp, minHeight = 40.dp)
+                        .clip(CircleShape)
+                        .background(Color(preview.user.color))
+                        .padding(bottom = 2.dp)
+                        .wrapContentSize(),
+                    text = preview.user.name.first().toString().uppercase(),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .wrapContentSize(),
+                    text = preview.lastMessage ?: "no message",
+                    fontSize = 14.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 }
