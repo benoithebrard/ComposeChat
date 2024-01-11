@@ -24,9 +24,12 @@ internal object DebugUtils {
         color = Random.nextLong(0xFFFFFFFF)
     )
 
-    fun generateMessage(user: ChatUser): ChatMessage = ChatMessage(
+    fun generateMessage(
+        user: ChatUser,
+        timeOffsetMillis: Long = 0L
+    ): ChatMessage = ChatMessage(
         user = user,
         message = mockMessages.shuffled().random(),
-        time = System.currentTimeMillis()
+        time = System.currentTimeMillis() + timeOffsetMillis
     )
 }

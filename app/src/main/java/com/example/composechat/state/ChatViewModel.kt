@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
+private const val DEFAULT_SCREEN_TITLE = "Chat"
+
 class ChatViewModel : ViewModel() {
 
     private val isLoggedIn = MutableStateFlow(true)
@@ -31,14 +33,11 @@ class ChatViewModel : ViewModel() {
                         userPreviews = users.map { user ->
                             ChatUserPreview(
                                 user = user,
-                                lastMessage = chatMessages
-                                    .filter { it.user.id == user.id }
-                                    .maxByOrNull { it.time }
-                                    ?.message
+                                lastMessage = chatMessages.findLatestMessage(user)
                             )
                         },
                         headerTitle = users.firstOrNull()?.name?.capitalize(Locale.current)
-                            ?: "Chat"
+                            ?: DEFAULT_SCREEN_TITLE
                     )
                 }
             } else ChatState.LoggedOut
@@ -52,11 +51,18 @@ class ChatViewModel : ViewModel() {
         users.value = users.value.minus(user)
     }
 
-    // TODO: remove that before production
+    // TODO: fetch data from backend instead, or provide UI to create messages
     fun createNewUserMessage() {
         val user = generateUser()
-        val message = generateMessage(user)
+        val message1 = generateMessage(user)
+        val message2 = generateMessage(user, 10L)
         users.value = listOf(user) + users.value
-        chatMessages.value = listOf(message) + chatMessages.value
+        chatMessages.value = listOf(message1, message2) + chatMessages.value
     }
 }
+
+private fun List<ChatMessage>.findLatestMessage(
+    user: ChatUser
+): String? = filter { it.user.id == user.id }
+    .maxByOrNull { it.time }
+    ?.message
