@@ -10,7 +10,7 @@ internal object DebugUtils {
     private val mockMessages: List<String> = listOf(
         "Hey wassup I'm waiting for you by the bus stop and it's raining like hell here so please come over really soon!",
         "Hi mom. Sorry I won't make it for dinner tonight, I'm hanging out with my buddies instead :)",
-        "SPAM DETECTED - don not open this message",
+        "SPAM DETECTED - do not open this message",
         "Thanks for your contribution to Vox News. We're happy you care about the world",
         "Yo man why don't you answer your phone???",
         "Hasta la vista, baby",
@@ -19,7 +19,6 @@ internal object DebugUtils {
 
 
     fun generateUser(): ChatUser = ChatUser(
-        id = Random.nextInt().toString(),
         name = "${('a'..'z').random()} - user #${userCount++}",
         color = Random.nextLong(0xFFFFFFFF)
     )

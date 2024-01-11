@@ -16,32 +16,66 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 private const val DEFAULT_SCREEN_TITLE = "Chat"
+private const val SUBSCRIPTION_TIMEOUT_MS = 5000L
 
 class ChatViewModel : ViewModel() {
 
     private val isLoggedIn = MutableStateFlow(true)
     private val chatMessages = MutableStateFlow<List<ChatMessage>>(emptyList())
     private val users = MutableStateFlow<List<ChatUser>>(emptyList())
+    private val searchText = MutableStateFlow("")
+    private val isLoading = MutableStateFlow(false)
 
-    val chatState: StateFlow<ChatState> =
-        combine(isLoggedIn, chatMessages, users) { isLoggedIn, chatMessages, users ->
-            if (isLoggedIn) {
-                if (users.isEmpty()) {
-                    ChatState.Empty
-                } else {
+    val chatState: StateFlow<ChatState> = combine(
+        isLoggedIn,
+        chatMessages,
+        users,
+        searchText
+    ) { isLoggedIn, chatMessages, users, searchText ->
+        when {
+            !isLoggedIn -> {
+                ChatState.LoggedOut
+            }
+
+            users.isEmpty() -> {
+                ChatState.Empty
+            }
+
+            searchText.isBlank() -> {
+                ChatState.Content(
+                    userPreviews = users.map { user ->
+                        ChatUserPreview(
+                            user = user,
+                            lastMessage = chatMessages.findLatestMessage(user)
+                        )
+                    },
+                    headerTitle = users.firstOrNull()?.name?.capitalize(Locale.current)
+                        ?: DEFAULT_SCREEN_TITLE
+                )
+            }
+
+            else -> {
+                val filteredMessages = chatMessages.filter { message ->
+                    message.doesMatchSearchQuery(searchText) && users.contains(message.user)
+                }
+                if (filteredMessages.isNotEmpty()) {
                     ChatState.Content(
-                        userPreviews = users.map { user ->
+                        userPreviews = filteredMessages.map { message ->
                             ChatUserPreview(
-                                user = user,
-                                lastMessage = chatMessages.findLatestMessage(user)
+                                user = message.user,
+                                lastMessage = message.message
                             )
                         },
-                        headerTitle = users.firstOrNull()?.name?.capitalize(Locale.current)
-                            ?: DEFAULT_SCREEN_TITLE
+                        headerTitle = "Search $searchText"
                     )
-                }
-            } else ChatState.LoggedOut
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), ChatState.Empty)
+                } else ChatState.Empty
+            }
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MS),
+        ChatState.Empty
+    )
 
     fun toggleLogout() {
         isLoggedIn.value = !isLoggedIn.value
@@ -58,6 +92,10 @@ class ChatViewModel : ViewModel() {
         val message2 = generateMessage(user, 10L)
         users.value = listOf(user) + users.value
         chatMessages.value = listOf(message1, message2) + chatMessages.value
+    }
+
+    fun onSearchTextChanged(text: String) {
+        searchText.value = text
     }
 }
 

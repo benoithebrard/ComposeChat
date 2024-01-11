@@ -39,7 +39,7 @@ fun ChatPreviewEntries(
         items(
             items = entries,
             key = { preview ->
-                preview.user.id
+                preview.id
             }
         ) { preview ->
             ChatPreviewEntry(
