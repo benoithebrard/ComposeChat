@@ -18,9 +18,11 @@ class MainActivity : ComponentActivity() {
                 val viewModel = viewModel<ChatViewModel>()
                 val state by viewModel.chatState.collectAsStateWithLifecycle()
                 val searchText by viewModel.searchText.collectAsStateWithLifecycle()
+                val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
                 ChatScreen(
                     state = state,
+                    isLoading = isLoading,
                     searchText = searchText,
                     onSearchTextChanged = viewModel::onSearchTextChanged,
                     onToggleLogout = {

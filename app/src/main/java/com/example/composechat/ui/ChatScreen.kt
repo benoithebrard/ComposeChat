@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +28,7 @@ import com.example.composechat.utils.DebugUtils.generateUser
 @Composable
 fun ChatScreen(
     state: ChatState,
+    isLoading: Boolean = false,
     searchText: String = "",
     onSearchTextChanged: (String) -> Unit = {},
     onToggleLogout: () -> Unit = {},
@@ -47,34 +49,43 @@ fun ChatScreen(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            when (state) {
-                is ChatState.LoggedOut -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "Logged out"
+            if (isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                when (state) {
+                    is ChatState.LoggedOut -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Logged out"
+                            )
+                        }
+                    }
+
+                    is ChatState.Empty -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "No message"
+                            )
+                        }
+                    }
+
+                    is ChatState.Content -> {
+                        ChatPreviewEntries(
+                            entries = state.userPreviews,
+                            onUserSelected = onUserSelected
                         )
                     }
-                }
-
-                is ChatState.Empty -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "No message"
-                        )
-                    }
-                }
-
-                is ChatState.Content -> {
-                    ChatPreviewEntries(
-                        entries = state.userPreviews,
-                        onUserSelected = onUserSelected
-                    )
                 }
             }
             IconButton(
@@ -132,6 +143,17 @@ fun ChatScreenLoggedOutPreview() {
     ComposeChatTheme {
         ChatScreen(
             state = ChatState.LoggedOut
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ChatScreenLoadingPreview() {
+    ComposeChatTheme {
+        ChatScreen(
+            state = ChatState.Empty,
+            isLoading = true
         )
     }
 }

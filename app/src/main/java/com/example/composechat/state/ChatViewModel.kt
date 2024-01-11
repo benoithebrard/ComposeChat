@@ -9,14 +9,20 @@ import com.example.composechat.data.ChatUser
 import com.example.composechat.data.ChatUserPreview
 import com.example.composechat.utils.DebugUtils.generateMessage
 import com.example.composechat.utils.DebugUtils.generateUser
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 
 private const val SUBSCRIPTION_TIMEOUT_MS = 5000L
+private const val SEARCH_DEBOUNCE_MS = 500L
 
 class ChatViewModel : ViewModel() {
 
@@ -28,13 +34,16 @@ class ChatViewModel : ViewModel() {
     val searchText = _searchText.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
-    val loading = _isLoading.asStateFlow()
+    val isLoading = _isLoading.asStateFlow()
 
+    @OptIn(FlowPreview::class)
     val chatState: StateFlow<ChatState> = combine(
         isLoggedIn,
         chatMessages,
         users,
         searchText
+            .debounce(SEARCH_DEBOUNCE_MS)
+            .onEach { _isLoading.update { true } }
     ) { isLoggedIn, chatMessages, users, searchText ->
         when {
             !isLoggedIn -> {
@@ -58,6 +67,8 @@ class ChatViewModel : ViewModel() {
             }
 
             else -> {
+                // simulate backend request
+                delay(1000L)
                 val filteredMessages = chatMessages.filter { message ->
                     message.doesMatchSearchQuery(searchText) && users.contains(message.user)
                 }
@@ -74,11 +85,13 @@ class ChatViewModel : ViewModel() {
                 } else ChatState.Empty
             }
         }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MS),
-        ChatState.Empty
-    )
+    }
+        .onEach { _isLoading.update { false } }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MS),
+            ChatState.Empty
+        )
 
     fun toggleLogout() {
         isLoggedIn.value = !isLoggedIn.value
