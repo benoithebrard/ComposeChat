@@ -27,8 +27,10 @@ import com.example.composechat.utils.DebugUtils.generateUser
 @Composable
 fun ChatScreen(
     state: ChatState,
-    onCreateNewUserMessage: () -> Unit = {},
+    searchText: String = "",
+    onSearchTextChanged: (String) -> Unit = {},
     onToggleLogout: () -> Unit = {},
+    onCreateNewUserMessage: () -> Unit = {},
     onUserSelected: (ChatUser) -> Unit = {}
 ) {
     Column(
@@ -38,6 +40,8 @@ fun ChatScreen(
     ) {
         ChatToolbar(
             state = state,
+            searchText = searchText,
+            onSearchTextChanged = onSearchTextChanged,
             onToggleLogout = onToggleLogout
         )
         Box(

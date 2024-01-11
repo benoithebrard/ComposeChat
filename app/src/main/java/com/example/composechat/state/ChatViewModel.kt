@@ -12,6 +12,7 @@ import com.example.composechat.utils.DebugUtils.generateUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
@@ -22,8 +23,12 @@ class ChatViewModel : ViewModel() {
     private val isLoggedIn = MutableStateFlow(true)
     private val chatMessages = MutableStateFlow<List<ChatMessage>>(emptyList())
     private val users = MutableStateFlow<List<ChatUser>>(emptyList())
-    private val searchText = MutableStateFlow("")
-    private val isLoading = MutableStateFlow(false)
+
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val loading = _isLoading.asStateFlow()
 
     val chatState: StateFlow<ChatState> = combine(
         isLoggedIn,
@@ -93,7 +98,7 @@ class ChatViewModel : ViewModel() {
     }
 
     fun onSearchTextChanged(text: String) {
-        searchText.value = text
+        _searchText.value = text
     }
 }
 

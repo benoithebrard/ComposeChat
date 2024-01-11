@@ -17,13 +17,17 @@ class MainActivity : ComponentActivity() {
             ComposeChatTheme {
                 val viewModel = viewModel<ChatViewModel>()
                 val state by viewModel.chatState.collectAsStateWithLifecycle()
+                val searchText by viewModel.searchText.collectAsStateWithLifecycle()
+
                 ChatScreen(
                     state = state,
-                    onCreateNewUserMessage = {
-                        viewModel.createNewUserMessage()
-                    },
+                    searchText = searchText,
+                    onSearchTextChanged = viewModel::onSearchTextChanged,
                     onToggleLogout = {
                         viewModel.toggleLogout()
+                    },
+                    onCreateNewUserMessage = {
+                        viewModel.createNewUserMessage()
                     },
                     onUserSelected = { user ->
                         viewModel.removeUser(user)
