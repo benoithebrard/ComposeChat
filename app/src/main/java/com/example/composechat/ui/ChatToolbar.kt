@@ -69,6 +69,7 @@ fun ChatToolbar(
                 .align(Alignment.CenterStart),
             onClick = {
                 isSearchExpanded = !isSearchExpanded
+                onSearchTextChanged("")
             }
         ) {
             Icon(
