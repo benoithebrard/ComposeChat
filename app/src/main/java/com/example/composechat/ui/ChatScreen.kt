@@ -18,17 +18,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.composechat.data.ChatUser
 import com.example.composechat.data.ChatUserPreview
 import com.example.composechat.state.ChatState
-import com.example.composechat.state.generateUser
 import com.example.composechat.ui.theme.ComposeChatTheme
+import com.example.composechat.utils.DebugUtils.generateUser
 
 @Composable
 fun ChatScreen(
     state: ChatState,
     onCreateNewUserMessage: () -> Unit = {},
     onToggleLogout: () -> Unit = {},
-    onPreviewSelected: (String) -> Unit = {}
+    onUserSelected: (ChatUser) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -68,7 +69,7 @@ fun ChatScreen(
                 is ChatState.Content -> {
                     ChatPreviewEntries(
                         entries = state.userPreviews,
-                        onPreviewSelected = onPreviewSelected
+                        onUserSelected = onUserSelected
                     )
                 }
             }

@@ -25,8 +25,8 @@ class MainActivity : ComponentActivity() {
                     onToggleLogout = {
                         viewModel.toggleLogout()
                     },
-                    onPreviewSelected = { userId ->
-                        viewModel.refreshMessage(userId)
+                    onUserSelected = { user ->
+                        viewModel.removeUser(user)
                     }
                 )
             }

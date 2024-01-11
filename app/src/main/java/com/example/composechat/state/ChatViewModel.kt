@@ -7,12 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.composechat.data.ChatMessage
 import com.example.composechat.data.ChatUser
 import com.example.composechat.data.ChatUserPreview
+import com.example.composechat.utils.DebugUtils.generateMessage
+import com.example.composechat.utils.DebugUtils.generateUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import kotlin.random.Random
 
 class ChatViewModel : ViewModel() {
 
@@ -47,50 +48,15 @@ class ChatViewModel : ViewModel() {
         isLoggedIn.value = !isLoggedIn.value
     }
 
+    fun removeUser(user: ChatUser) {
+        users.value = users.value.minus(user)
+    }
+
+    // TODO: remove that before production
     fun createNewUserMessage() {
         val user = generateUser()
         val message = generateMessage(user)
-        addUser(user)
-        addMessage(message)
-    }
-
-    fun refreshMessage(userId: String) {
-        findUserById(userId)?.let { user ->
-            addMessage(generateMessage(user))
-        }
-    }
-
-    private fun addMessage(message: ChatMessage) {
+        users.value = listOf(user) + users.value
         chatMessages.value = listOf(message) + chatMessages.value
     }
-
-    private fun addUser(user: ChatUser) {
-        users.value = listOf(user) + users.value
-    }
-
-    private fun findUserById(userId: String): ChatUser? = users.value.find { it.id == userId }
 }
-
-private var userCount = 0
-
-private val mockMessages: List<String> = listOf(
-    "Hey wassup I'm waiting for you by the bus stop and it's raining like hell here so please come over really soon!",
-    "Hi mom. Sorry I won't make it for dinner tonight, I'm hanging out with my buddies instead :)",
-    "SPAM DETECTED - don not open this message",
-    "Thanks for your contribution to Vox News. We're happy you care about the world",
-    "Yo man why don't you answer your phone???",
-    "Hasta la vista, baby"
-)
-
-
-internal fun generateUser(): ChatUser = ChatUser(
-    id = Random.nextInt().toString(),
-    name = "${('a'..'z').random()} - user #${userCount++}",
-    color = Random.nextLong(0xFFFFFFFF)
-)
-
-private fun generateMessage(user: ChatUser): ChatMessage = ChatMessage(
-    user = user,
-    message = mockMessages.shuffled().random(),
-    time = System.currentTimeMillis()
-)
