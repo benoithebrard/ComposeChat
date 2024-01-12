@@ -54,14 +54,14 @@ class ChatViewModel : ViewModel() {
                 ChatState.Empty
             }
 
-            searchText.isBlank() -> {
-                resolveChatState(users, chatMessages)
-            }
-
-            else -> {
+            searchText.isNotBlank() -> {
                 // simulate backend request
                 delay(1000L)
                 resolveSearchState(users, chatMessages, searchText)
+            }
+
+            else -> {
+                resolveDefaultState(users, chatMessages)
             }
         }
     }
@@ -72,7 +72,7 @@ class ChatViewModel : ViewModel() {
             ChatState.Empty
         )
 
-    private fun resolveChatState(
+    private fun resolveDefaultState(
         users: List<ChatUser>,
         chatMessages: List<ChatMessage>
     ) = ChatState.Content(
