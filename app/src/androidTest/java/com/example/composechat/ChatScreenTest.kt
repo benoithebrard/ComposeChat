@@ -11,8 +11,8 @@ import androidx.compose.ui.test.performClick
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.composechat.state.ChatState
-import com.example.composechat.state.ChatViewModel
+import com.example.composechat.viewmodel.ChatState
+import com.example.composechat.viewmodel.ChatViewModel
 import com.example.composechat.ui.ChatScreen
 import com.example.composechat.ui.theme.ComposeChatTheme
 import org.junit.Assert.*

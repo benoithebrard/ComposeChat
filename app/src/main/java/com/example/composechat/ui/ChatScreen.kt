@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composechat.data.ChatUser
 import com.example.composechat.data.ChatUserPreview
-import com.example.composechat.state.ChatState
+import com.example.composechat.viewmodel.ChatState
 import com.example.composechat.ui.theme.ComposeChatTheme
 import com.example.composechat.utils.DebugUtils.generateUser
 

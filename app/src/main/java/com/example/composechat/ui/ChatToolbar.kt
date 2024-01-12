@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.composechat.state.ChatState
+import com.example.composechat.viewmodel.ChatState
 import com.example.composechat.ui.theme.ComposeChatTheme
 
 internal const val DEFAULT_TOOLBAR_TITLE = "Chat"

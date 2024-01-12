@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.composechat.state.ChatViewModel
+import com.example.composechat.viewmodel.ChatViewModel
 import com.example.composechat.ui.ChatScreen
 import com.example.composechat.ui.theme.ComposeChatTheme
 

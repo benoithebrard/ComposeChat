@@ -1,4 +1,4 @@
-package com.example.composechat.state
+package com.example.composechat.viewmodel
 
 import androidx.compose.runtime.Immutable
 import com.example.composechat.data.ChatUserPreview
