@@ -55,34 +55,13 @@ class ChatViewModel : ViewModel() {
             }
 
             searchText.isBlank() -> {
-                ChatState.Content(
-                    userPreviews = users.map { user ->
-                        ChatUserPreview(
-                            user = user,
-                            lastMessage = chatMessages.findLatestMessage(user)
-                        )
-                    },
-                    headerTitle = users.firstOrNull()?.name?.capitalize(Locale.current)
-                )
+                resolveChatState(users, chatMessages)
             }
 
             else -> {
                 // simulate backend request
                 delay(1000L)
-                val filteredMessages = chatMessages.filter { message ->
-                    message.doesMatchSearchQuery(searchText) && users.contains(message.user)
-                }
-                if (filteredMessages.isNotEmpty()) {
-                    ChatState.Content(
-                        userPreviews = filteredMessages.map { message ->
-                            ChatUserPreview(
-                                user = message.user,
-                                lastMessage = message.message
-                            )
-                        },
-                        headerTitle = "Search $searchText"
-                    )
-                } else ChatState.Empty
+                resolveSearchState(users, chatMessages, searchText)
             }
         }
     }
@@ -92,6 +71,40 @@ class ChatViewModel : ViewModel() {
             SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MS),
             ChatState.Empty
         )
+
+    private fun resolveChatState(
+        users: List<ChatUser>,
+        chatMessages: List<ChatMessage>
+    ) = ChatState.Content(
+        userPreviews = users.map { user ->
+            ChatUserPreview(
+                user = user,
+                lastMessage = chatMessages.findLatestMessage(user)
+            )
+        },
+        headerTitle = users.firstOrNull()?.name?.capitalize(Locale.current)
+    )
+
+    private fun resolveSearchState(
+        users: List<ChatUser>,
+        chatMessages: List<ChatMessage>,
+        searchText: String
+    ): ChatState {
+        val filteredMessages = chatMessages.filter { message ->
+            message.doesMatchSearchQuery(searchText) && users.contains(message.user)
+        }
+        return if (filteredMessages.isNotEmpty()) {
+            ChatState.Content(
+                userPreviews = filteredMessages.map { message ->
+                    ChatUserPreview(
+                        user = message.user,
+                        lastMessage = message.message
+                    )
+                },
+                headerTitle = "Search $searchText"
+            )
+        } else ChatState.Empty
+    }
 
     fun toggleLogout() {
         isLoggedIn.value = !isLoggedIn.value
