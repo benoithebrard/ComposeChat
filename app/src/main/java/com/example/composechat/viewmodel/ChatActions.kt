@@ -10,21 +10,10 @@ interface ChatActions {
 
     companion object {
         val DefaultChatActions = object : ChatActions {
-            override fun toggleLogout() {
-                TODO("Not yet implemented")
-            }
-
-            override fun removeUser(user: ChatUser) {
-                TODO("Not yet implemented")
-            }
-
-            override fun createNewUserMessage() {
-                TODO("Not yet implemented")
-            }
-
-            override fun onSearchTextChanged(text: String) {
-                TODO("Not yet implemented")
-            }
+            override fun toggleLogout() {}
+            override fun removeUser(user: ChatUser) {}
+            override fun createNewUserMessage() {}
+            override fun onSearchTextChanged(text: String) {}
         }
     }
 }
