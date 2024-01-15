@@ -19,21 +19,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.composechat.data.ChatUser
 import com.example.composechat.data.ChatUserPreview
-import com.example.composechat.viewmodel.ChatState
 import com.example.composechat.ui.theme.ComposeChatTheme
 import com.example.composechat.utils.DebugUtils.generateUser
+import com.example.composechat.viewmodel.ChatActions
+import com.example.composechat.viewmodel.ChatActions.Companion.DefaultChatActions
+import com.example.composechat.viewmodel.ChatState
 
 @Composable
 fun ChatScreen(
     state: ChatState,
     isLoading: Boolean = false,
     searchText: String = "",
-    onSearchTextChanged: (String) -> Unit = {},
-    onToggleLogout: () -> Unit = {},
-    onCreateNewUserMessage: () -> Unit = {},
-    onUserSelected: (ChatUser) -> Unit = {}
+    actions: ChatActions = DefaultChatActions
 ) {
     Column(
         modifier = Modifier
@@ -43,8 +41,8 @@ fun ChatScreen(
         ChatToolbar(
             state = state,
             searchText = searchText,
-            onSearchTextChanged = onSearchTextChanged,
-            onToggleLogout = onToggleLogout
+            onSearchTextChanged = actions::onSearchTextChanged,
+            onToggleLogout = actions::toggleLogout
         )
         Box(
             modifier = Modifier.fillMaxSize()
@@ -83,7 +81,7 @@ fun ChatScreen(
                     is ChatState.Content -> {
                         ChatPreviewEntries(
                             entries = state.userPreviews,
-                            onUserSelected = onUserSelected
+                            onUserSelected = actions::removeUser
                         )
                     }
                 }
@@ -94,7 +92,7 @@ fun ChatScreen(
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.tertiary)
                     .align(Alignment.BottomEnd),
-                onClick = onCreateNewUserMessage
+                onClick = actions::createNewUserMessage
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

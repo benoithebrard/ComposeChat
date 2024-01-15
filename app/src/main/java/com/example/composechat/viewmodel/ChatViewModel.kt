@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.update
 private const val SUBSCRIPTION_TIMEOUT_MS = 5000L
 private const val SEARCH_DEBOUNCE_MS = 500L
 
-class ChatViewModel : ViewModel() {
+class ChatViewModel : ViewModel(), ChatActions {
 
     private val isLoggedIn = MutableStateFlow(true)
     private val chatMessages = MutableStateFlow<List<ChatMessage>>(emptyList())
@@ -72,6 +72,27 @@ class ChatViewModel : ViewModel() {
             ChatState.Empty
         )
 
+    override fun toggleLogout() {
+        isLoggedIn.value = !isLoggedIn.value
+    }
+
+    override fun removeUser(user: ChatUser) {
+        users.value = users.value.minus(user)
+    }
+
+    // TODO: fetch data from backend instead, or provide UI to create messages
+    override fun createNewUserMessage() {
+        val user = generateUser()
+        val message1 = generateMessage(user)
+        val message2 = generateMessage(user, 10L)
+        users.value = listOf(user) + users.value
+        chatMessages.value = listOf(message1, message2) + chatMessages.value
+    }
+
+    override fun onSearchTextChanged(text: String) {
+        _searchText.value = text
+    }
+
     private fun resolveDefaultState(
         users: List<ChatUser>,
         chatMessages: List<ChatMessage>
@@ -104,27 +125,6 @@ class ChatViewModel : ViewModel() {
                 headerTitle = "Search $searchText"
             )
         } else ChatState.Empty
-    }
-
-    fun toggleLogout() {
-        isLoggedIn.value = !isLoggedIn.value
-    }
-
-    fun removeUser(user: ChatUser) {
-        users.value = users.value.minus(user)
-    }
-
-    // TODO: fetch data from backend instead, or provide UI to create messages
-    fun createNewUserMessage() {
-        val user = generateUser()
-        val message1 = generateMessage(user)
-        val message2 = generateMessage(user, 10L)
-        users.value = listOf(user) + users.value
-        chatMessages.value = listOf(message1, message2) + chatMessages.value
-    }
-
-    fun onSearchTextChanged(text: String) {
-        _searchText.value = text
     }
 }
 
