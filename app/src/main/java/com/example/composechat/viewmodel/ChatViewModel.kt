@@ -72,16 +72,16 @@ class ChatViewModel : ViewModel(), ChatActions {
             ChatState.Empty
         )
 
-    override fun toggleLogout() {
+    override val toggleLogout = {
         isLoggedIn.value = !isLoggedIn.value
     }
 
-    override fun removeUser(user: ChatUser) {
+    override val removeUser = { user: ChatUser ->
         users.value = users.value.minus(user)
     }
 
     // TODO: fetch data from backend instead, or provide UI to create messages
-    override fun createNewUserMessage() {
+    override val createNewUserMessage = {
         val user = generateUser()
         val message1 = generateMessage(user)
         val message2 = generateMessage(user, 10L)
@@ -89,7 +89,7 @@ class ChatViewModel : ViewModel(), ChatActions {
         chatMessages.value = listOf(message1, message2) + chatMessages.value
     }
 
-    override fun onSearchTextChanged(text: String) {
+    override val onSearchTextChanged = { text: String ->
         _searchText.value = text
     }
 

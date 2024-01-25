@@ -41,8 +41,8 @@ fun ChatScreen(
         ChatToolbar(
             state = state,
             searchText = searchText,
-            onSearchTextChanged = actions::onSearchTextChanged,
-            onToggleLogout = actions::toggleLogout
+            onSearchTextChanged = actions.onSearchTextChanged,
+            onToggleLogout = actions.toggleLogout
         )
         Box(
             modifier = Modifier.fillMaxSize()
@@ -81,7 +81,7 @@ fun ChatScreen(
                     is ChatState.Content -> {
                         ChatPreviewEntries(
                             entries = state.userPreviews,
-                            onUserSelected = actions::removeUser
+                            onUserSelected = actions.removeUser
                         )
                     }
                 }
@@ -92,7 +92,7 @@ fun ChatScreen(
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.tertiary)
                     .align(Alignment.BottomEnd),
-                onClick = actions::createNewUserMessage
+                onClick = actions.createNewUserMessage
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

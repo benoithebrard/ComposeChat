@@ -11,7 +11,6 @@ import androidx.compose.ui.test.performClick
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.composechat.data.ChatUser
 import com.example.composechat.ui.ChatScreen
 import com.example.composechat.ui.theme.ComposeChatTheme
 import com.example.composechat.viewmodel.ChatActions
@@ -68,21 +67,8 @@ class ChatScreenTest {
                 ChatScreen(
                     state = state,
                     actions = object : ChatActions {
-                        override fun createNewUserMessage() {
-                            viewModel.createNewUserMessage()
-                        }
-
-                        override fun onSearchTextChanged(text: String) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun removeUser(user: ChatUser) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun toggleLogout() {
-                            TODO("Not yet implemented")
-                        }
+                        override val createNewUserMessage: () -> Unit =
+                            { viewModel.createNewUserMessage() }
                     }
                 )
             }
