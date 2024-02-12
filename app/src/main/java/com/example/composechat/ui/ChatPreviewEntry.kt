@@ -50,7 +50,7 @@ fun ChatPreviewEntry(
                     .padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ChatPreviewIcon(
+                ChatUserIcon(
                     preview = preview,
                     modifier = Modifier.size(40.dp)
                 )

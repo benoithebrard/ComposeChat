@@ -27,7 +27,7 @@ import kotlin.random.Random
 private const val CROSSFADE_DURATION_ML = 500
 
 @Composable
-fun ChatPreviewIcon(
+fun ChatUserIcon(
     preview: ChatUserPreview,
     modifier: Modifier = Modifier
 ) {
@@ -61,7 +61,7 @@ fun ChatPreviewIcon(
 
 @Preview(widthDp = 40, heightDp = 40)
 @Composable
-fun ChatPreviewIconPreview() {
+fun ChatUserIconPreview() {
     val preview = ChatUserPreview(
         user = ChatUser(
             id = "1234",
@@ -71,7 +71,7 @@ fun ChatPreviewIconPreview() {
         lastMessage = "Hey wassup I'm waiting for you by the bus stop and it's raining like hell here so please come over really soon!"
     )
     ComposeChatTheme {
-        ChatPreviewIcon(
+        ChatUserIcon(
             preview = preview
         )
     }
