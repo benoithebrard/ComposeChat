@@ -34,13 +34,11 @@ fun ChatPreviewEntries(
     LazyColumn(
         state = lazyListState,
         contentPadding = PaddingValues(10.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(
             items = entries,
-            key = { preview ->
-                preview.id
-            }
+            key = { preview -> preview.id }
         ) { preview ->
             ChatPreviewEntry(
                 preview = preview,
